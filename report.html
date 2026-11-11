@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VulnScan Report</title><link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"></head>
+<body><main class="container"><a href="/">← Back to scanner</a><h1>Scan report</h1>
+{% if r %}
+<section class="panel"><h2>{{ r.target }}</h2><p>Scanned: {{ r.scanned_at }}</p>
+<p>Duration: {{ r.duration_seconds }} seconds · Ports checked: {{ r.ports_checked }}</p>
+<h3>Open ports</h3><p>{{ r.open_ports|join(', ') if r.open_ports else 'No open ports detected in the selected range.' }}</p>
+<h3>Findings</h3>
+{% for item in r.findings %}<article class="finding"><strong>{{ item.severity }} — {{ item.title }}</strong>
+<p>{{ item.description }}</p><small>{{ item.evidence }}</small></article>
+{% else %}<p>No findings were reported by the enabled checks.</p>{% endfor %}
+<p class="foot">{{ r.note }}</p></section>{% else %}<p>No report available. Run a scan first.</p>{% endif %}
+</main></body></html>
